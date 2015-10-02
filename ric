@@ -1,0 +1,89 @@
+#!/bin/bash
+######################################################################
+# ric
+# Copyright (C) 2015 Ivan Alejandro <ivanalejandro0@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+######################################################################
+
+# Define important paths
+# TODO: we should store this in a fixed path, not depending on the script location
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+APPS_ROOT="$SCRIPT_DIR/apps"  # Root path for all the applications
+DATA_ROOT="$SCRIPT_DIR/data"  # Root path for all the data
+BASE_APP="$SCRIPT_DIR/apps/base-app.source"  # base app.sh
+
+# These needs to be available for application's app.sh
+export DATA_ROOT
+export BASE_APP
+
+# Run the specified application's app.sh
+# NOTE: we skip ubuntu-sandbox since it uses the standard ubuntu image
+run() {
+    # TODO: we should use the prefix ric/ instead of test/
+    # hmmm ... maybe usernane/image is better
+    if [[ -z `docker images | grep "test\/$1"` ]]; then
+        echo "Error: no such image $1. Maybe you forgot to build?"
+        return 1
+    fi
+
+    $APPS_ROOT/$1/app.sh
+}
+
+# List the existing apps, downloaded, not built
+list(){
+    ls --color=auto -b $APPS_ROOT
+}
+
+# Build the specified app, it needs to be downloaded.
+build(){
+    if [ ! -d "$APPS_ROOT/$1" ]; then
+        echo "Error: no such app $1. Maybe you forgot to download it?"
+        return 1
+    fi
+
+    cd $APPS_ROOT/$1
+    docker build -t test/$1 .
+}
+
+helpme() {
+    echo ">> Run In a Container (ric) - help"
+    echo "Helper script to easily build and run apps inside docker containers."
+    echo
+    echo "Usage: $0 ( run <app> | ls | build <app> | help )"
+    echo
+    echo "   <app>  : the name of the application that we want to run/build."
+    echo
+    echo "     run  : Run the specified app in a docker container."
+    echo "      ls  : List the available apps to use."
+    echo "   build  : Build the specified app to run later in a container."
+    echo "    help  : Show this help"
+    echo
+}
+
+
+case "$1" in
+    run)
+        run $2
+        ;;
+    ls)
+        list
+        ;;
+    build)
+        build $2
+        ;;
+    *)
+        helpme
+        ;;
+esac

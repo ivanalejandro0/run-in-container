@@ -1,0 +1,7 @@
+# NOTE: to get X11 socket forwarding to work we need this
+xhost local:root > /dev/null
+
+if [ -z $DATA_ROOT ]; then
+    echo "Error: DATA_ROOT variable is not defined"
+    exit 1
+fi
