@@ -67,7 +67,9 @@ Thanks to this guys for ideas, inspiration and some Dockerfiles that I've used
 here and there.
 
 https://blog.jessfraz.com/post/docker-containers-on-the-desktop/
+
 https://github.com/jfrazelle/dockerfiles
+
 http://subuser.org/
 
 
