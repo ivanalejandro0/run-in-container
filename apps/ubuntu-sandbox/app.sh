@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source $BASE_APP
-DATA_DIR="$DATA_ROOT/ubuntu-sandbox/"
+APP_NAME="ubuntu-sandbox"
+source $BASE_APP    # This provides $DATA_DIR
 
 docker run --rm -it \
     --net host \

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source $BASE_APP
-DATA_DIR="$DATA_ROOT/atom/"
+APP_NAME="atom"
+source $BASE_APP    # This provides $DATA_DIR
 
 docker run --rm -it \
     -v /tmp/.X11-unix:/tmp/.X11-unix \

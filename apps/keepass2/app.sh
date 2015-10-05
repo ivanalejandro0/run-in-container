@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source $BASE_APP
-DATA_DIR="$DATA_ROOT/keepass2/"
+APP_NAME="keepass2"
+source $BASE_APP    # This provides $DATA_DIR
 
 docker run --rm -it \
     -v /tmp/.X11-unix:/tmp/.X11-unix \

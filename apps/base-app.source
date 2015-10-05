@@ -5,3 +5,10 @@ if [ -z $DATA_ROOT ]; then
     echo "Error: DATA_ROOT variable is not defined"
     exit 1
 fi
+
+if [ -z $APP_NAME ]; then
+    echo "Error: APP_NAME variable is not defined"
+    exit 1
+fi
+
+DATA_DIR="$DATA_ROOT/$APP_NAME/"

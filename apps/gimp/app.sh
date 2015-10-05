@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source $BASE_APP
-DATA_DIR="$DATA_ROOT/gimp/"
+APP_NAME="gimp"
+source $BASE_APP    # This provides $DATA_DIR
 
 docker run --rm -it \
     -v /etc/localtime:/etc/localtime:ro \
