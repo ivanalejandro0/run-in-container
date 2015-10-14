@@ -29,8 +29,15 @@ Adding more apps
 In order to have more apps available you need to add a ``app-name`` folder to
 the ``apps/`` directory, containing:
 
-    * a ``Dockerfile`` that install all the needed stuff for your application/service
-    * a ``app.sh`` file that serve as a start point to run your app.
+    * ``Dockerfile`` starting from here we build the image with all the needed
+      stuff for your application/service. This is optional, if no local image
+      is found for this app it will be pulled from the docker registry.
+    * ``app.cfg`` in this file each app specifies some details about how to run
+      it. This is useful to easily define apps without knowing much of docker
+      itself.
+    * ``app.sh`` if this file exists, it will serve as a start point to run
+      your app. This is useful if you need some special flags that are not
+      available for the ``app.cfg`` file.
 
 With just that your app can be managed with ``ric``.
 
@@ -54,11 +61,15 @@ Some notes
 ----------
 
 This is useful for sandboxing but is as safe as a vanilla ``docker``, so don't
-thing this is bulletproof.
+think this is bulletproof.
+
+This started as a simple prototype to help me test new apps and maybe some
+superquick not-so-safe sandboxing.
 
 There is a lot of room for improvements (I'll write down some of them as
 issues).
 
+Feel free to open issues or send pull requests if you feel so.
 
 Thanks to
 ---------
@@ -76,14 +87,12 @@ http://subuser.org/
 A long TODO list
 ----------------
 
-This started as a simple prototype to help me test new apps and maybe some
-superquick not-so-safe sandboxing.
+There are lots of things that could be improved, I may or may not spend much
+more time on this.
 
-There are lots of things that could be improved, I may or may not spend more
-time on this.
+First of all, I should move this list to Github issues.
 
-Feel free to open issues or send pull requests if you feel so.
+Stop apps running on containers started in background.
 
-Most likely the next thing I'll do on this is to add support for pull images
-from the docker registry, but right now having the dockerfiles is enough for my
-needs.
+Add dependency between apps. See ``relies_on`` from
+https://github.com/jfrazelle/dotfiles/blob/master/.dockerfunc#L20

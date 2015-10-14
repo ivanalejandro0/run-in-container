@@ -28,22 +28,44 @@ BASE_APP="$SCRIPT_DIR/apps/base-app.source"  # base app.sh
 export DATA_ROOT
 export BASE_APP
 
-# Run the specified application's app.sh
-# NOTE: we skip ubuntu-sandbox since it uses the standard ubuntu image
+_is_image() {
+    docker images | grep "^$1 "
+}
+
+# Run the application as specified on app.cfg
 run() {
-    # TODO: we should use the prefix ric/ instead of test/
-    # hmmm ... maybe usernane/image is better
-    if [[ -z `docker images | grep "test\/$1"` ]]; then
-        echo "Error: no such image $1. Maybe you forgot to build?"
+    app_name=$2
+    shift # remove 'run' from arg list
+    shift # remove app name from arg list
+    passthrough_args=$@
+
+    # TODO: forward args "$@", remove $1
+    if [ ! -d "$APPS_ROOT/$app_name" ]; then
+        echo "Error: no such app $app_name Maybe you forgot to download it?"
         return 1
     fi
 
-    $APPS_ROOT/$1/app.sh
+    APP_CFG="$APPS_ROOT/$app_name/app.cfg"
+    export APP_CFG
+    source $APP_CFG
+
+    if [[ -z `_is_image $IMAGE` ]]; then
+        echo "Error: no such image $IMAGE Maybe you forgot to build?"
+        return 1
+    fi
+
+    # use app.sh as a start point if the file exists
+    if [ -f "$APPS_ROOT/$app_name/app.sh" ]; then
+        $APPS_ROOT/$app_name/app.sh $passthrough_args
+    else
+        # TODO: use app.cfg or app.sh if exist
+        $APPS_ROOT/run_app.sh $app_name $passthrough_args
+    fi
 }
 
 # List the existing apps, downloaded, not built
 list(){
-    ls --color=auto -b $APPS_ROOT
+    cd $APPS_ROOT; ls --color=auto -d -b */
 }
 
 # Build the specified app, it needs to be downloaded.
@@ -52,9 +74,19 @@ build(){
         echo "Error: no such app $1. Maybe you forgot to download it?"
         return 1
     fi
+    if [ ! -f "$APPS_ROOT/$1/Dockerfile" ]; then
+        echo "Error: no Dockerfile for app $1. Maybe you forgot to download it?"
+        return 1
+    fi
+
+    APP_CFG="$APPS_ROOT/$1/app.cfg"
+    source $APP_CFG
 
     cd $APPS_ROOT/$1
-    docker build -t test/$1 .
+
+    # TODO: we should use the prefix ric/ instead of test/
+    # hmmm ... maybe usernane/image is better
+    docker build -t $IMAGE .
 }
 
 helpme() {
@@ -75,7 +107,7 @@ helpme() {
 
 case "$1" in
     run)
-        run $2
+        run $@
         ;;
     ls)
         list
