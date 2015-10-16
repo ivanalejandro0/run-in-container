@@ -9,7 +9,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 RUN add-apt-repository ppa:neovim-ppa/unstable && apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     python-dev python-pip python3-dev python3-pip \
+    exuberant-ctags build-essential cmake git \
     neovim && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip install flake8 jsbeautifier vim-debug dbgp neovim
+
+WORKDIR /host/
 
 ENTRYPOINT ["nvim"]
