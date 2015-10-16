@@ -18,8 +18,10 @@
 ######################################################################
 
 # Define important paths
+
 # TODO: we should store this in a fixed path, not depending on the script location
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+SCRIPT_DIR="$( cd "$( dirname $( realpath "${BASH_SOURCE[0]}" )  )" && pwd  )"
+
 APPS_ROOT="$SCRIPT_DIR/apps"  # Root path for all the applications
 DATA_ROOT="$SCRIPT_DIR/data"  # Root path for all the data
 BASE_APP="$SCRIPT_DIR/apps/base-app.source"  # base app.sh
