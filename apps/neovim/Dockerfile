@@ -15,6 +15,8 @@ RUN add-apt-repository ppa:neovim-ppa/unstable && apt-get update && \
 
 RUN pip install flake8 jsbeautifier vim-debug dbgp neovim
 
+ENV TERM='xterm-256'
+
 WORKDIR /host/
 
 ENTRYPOINT ["nvim"]
