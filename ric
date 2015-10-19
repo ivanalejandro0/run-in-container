@@ -88,20 +88,22 @@ build(){
 
     # TODO: we should use the prefix ric/ instead of test/
     # hmmm ... maybe usernane/image is better
-    docker build -t $IMAGE .
+    cache_opt=""
+    [ "$2" == "nocache" ] && cache_opt="--no-cache=true"
+    docker build $cache_opt -t $IMAGE .
 }
 
 helpme() {
     echo ">> Run In a Container (ric) - help"
     echo "Helper script to easily build and run apps inside docker containers."
     echo
-    echo "Usage: $0 ( run <app> | ls | build <app> | help )"
+    echo "Usage: $0 ( run <app> | ls | build <app> (nocache) | help )"
     echo
     echo "   <app>  : the name of the application that we want to run/build."
     echo
     echo "     run  : Run the specified app in a docker container."
     echo "      ls  : List the available apps to use."
-    echo "   build  : Build the specified app to run later in a container."
+    echo "   build  : Build the specified app to run later in a container. Use nocache option to discard cache."
     echo "    help  : Show this help"
     echo
 }
@@ -115,7 +117,7 @@ case "$1" in
         list
         ;;
     build)
-        build $2
+        build $2 $3
         ;;
     *)
         helpme
