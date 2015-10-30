@@ -1,14 +1,16 @@
 #!/bin/bash
 
-APP_NAME="app-name"  # You need to define this
+# ----- This lines are required, don't remove -----
+# $APP_CFG and $BASE_APP will be defined at this point.
+source $APP_CFG   # This must provide $APP_NAME and $IMAGE
+source $BASE_APP  # This provides $DATA_DIR
+# ----- This lines are required, don't remove -----
 
-# $BASE_APP will be defined at this point
-# This `source` provides $DATA_DIR to be used as root for your data
-source $BASE_APP
+# ----- Add you custom code below -----
 
 docker run --rm -it \
     --net host \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e DISPLAY=unix$DISPLAY \
     -v $DATA_DIR:/host/ \
-    ubuntu:14.04 bash
+    $IMAGE $passthrough_args
