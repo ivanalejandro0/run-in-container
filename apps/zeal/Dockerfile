@@ -10,4 +10,7 @@ RUN add-apt-repository ppa:zeal-developers/ppa && apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y zeal && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN groupadd -r user_grp && useradd -r -g user_grp user
+USER user
+
 ENTRYPOINT ["zeal"]
