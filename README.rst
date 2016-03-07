@@ -96,3 +96,18 @@ Stop apps running on containers started in background.
 
 Add dependency between apps. See ``relies_on`` from
 https://github.com/jfrazelle/dotfiles/blob/master/.dockerfunc#L20
+
+Use Xpra (screen for X) + Xephyr (lighter X server). xvfb? (dummy x server)
+https://blog.docker.com/2013/07/docker-desktop-your-desktop-over-ssh-running-inside-of-a-docker-container/
+https://help.ubuntu.com/community/Xpra
+
+Server:
+$ apt-get install openssh-server lxterminal
+$ xpra start --no-pulseaudio --no-mdns --encoding=rgb :10
+$ DISPLAY=:10 lxterminal
+
+Client:
+$ xpra attach ssh:root@172.17.0.34:10 
+
+
+Build apps using alpine when possible
