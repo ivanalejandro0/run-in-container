@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 
 MAINTAINER Ivan Alejandro <ivanalejandro0@gmail.com>
 
