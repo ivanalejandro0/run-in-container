@@ -22,6 +22,8 @@ How to use?
     # [...vanilla docker build output...]
     $ ./ric run atom  # that's it :)
 
+    $ xhost local:  # maybe needed
+
 
 Adding more apps
 ----------------
