@@ -37,6 +37,8 @@ passthrough_args=$@
 
 docker run $RUN_OPTS \
     -v /etc/localtime:/etc/localtime:ro \
+    -v /etc/machine-id:/etc/machine-id:ro \
+    -v /var/run/dbus:/var/run/dbus \
     $NET_OPTS \
     $PORTS \
     $X11_OPTS \
