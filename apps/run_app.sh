@@ -6,6 +6,7 @@ source $SCRIPT_DIR/$1/app.cfg
 if [ $X11 == "true" ]; then
     X11_OPTS="-v /tmp/.X11-unix:/tmp/.X11-unix"
     X11_OPTS="$X11_OPTS -e DISPLAY=unix$DISPLAY"
+    # X11_OPTS="$X11_OPTS --device /dev/dri"
 else
     X11_OPTS=""
 fi
