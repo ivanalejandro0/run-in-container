@@ -36,4 +36,4 @@ docker run --rm -it \
     -v $DATA_DIR/pki:$CONT_HOME/.pki \
     -v $DATA_DIR/stremio-server:$CONT_HOME/.stremio-server \
     -v $DATA_DIR/cache:$CONT_HOME/.cache \
-    test/stremio stremio
+    run-in-container/stremio stremio
